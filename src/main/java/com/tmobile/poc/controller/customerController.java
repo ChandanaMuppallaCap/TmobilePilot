@@ -44,11 +44,11 @@ private	CustomerDAORepository service;
 		@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Customer Information is deleted Sucessfully!"),
 		@ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Error Occurred while processing the request! ") })
 
-	@DeleteMapping( value="/v1/customers/customer/delete/{customerID}",produces = "application/json" /*consumes="application/json"*/)
+	@DeleteMapping( value="/v1/customers/customer/delete/{customerID}",produces = "application/json" )
 	public ResponseEntity deleteCustomer(@PathVariable Integer customerID) {
 		try{
 		service.delete(customerID);
-		return new ResponseEntity("Successfully Deleted Customer with customerId"+customerID, HttpStatus.OK);
+		return new ResponseEntity(customerID, HttpStatus.OK);
 		}
 		catch(Exception e){
 			System.out.println(e.getMessage());
@@ -61,11 +61,11 @@ private	CustomerDAORepository service;
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Customer Information is saved Sucessfully!"),
 			@ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Error Occurred while processing the request! ") })
-	@PutMapping(value="/v1/customers/customer/update",produces = "application/json" ,consumes="application/json")
+	@PutMapping(value="/v1/customers/customer/update",produces = "application/json" )
 	public ResponseEntity updateCustomer(@RequestBody Customer customer) {
 		try{
 		service.save(customer);
-		return new ResponseEntity("Successfully added Customer "+ customer, HttpStatus.OK);
+		return new ResponseEntity( customer, HttpStatus.OK);
 		}
 		catch(Exception e)
 		{
@@ -77,14 +77,15 @@ private	CustomerDAORepository service;
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Customer Data is fetched as Success!"),
 			@ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Customer Data ") })
-	@GetMapping( value="/api-service/v1/customers/customer/{Id}",produces = "application/json")
-	public ResponseEntity RetrieveCustomer(@PathVariable Integer Id) {
-		if(Id!=0){
-		 return new ResponseEntity (service.findOne(Id),HttpStatus.OK);
+	@GetMapping( value="/api-service/v1/customers/customer/{CustomerID}",produces = "application/json")
+	public ResponseEntity RetrieveCustomer(@PathVariable Integer CustomerID) {
+		if(CustomerID>0){
+		 return new ResponseEntity (service.findOne(CustomerID),HttpStatus.OK);
 		}
 		else
 		{
-			return new ResponseEntity("Error finding the Customer with the Id", HttpStatus.BAD_REQUEST);	}
+			return new ResponseEntity("Error finding the Customer with this Id" , HttpStatus.BAD_REQUEST);	
+			}
 	}
 	
 }
