@@ -48,7 +48,7 @@ private	CustomerDAORepository service;
 	public ResponseEntity deleteCustomer(@PathVariable Integer customerID) {
 		try{
 		service.delete(customerID);
-		return new ResponseEntity(customerID, HttpStatus.OK);
+		return new ResponseEntity("Successfully Deleted Customer with customerId"+customerID, HttpStatus.OK);
 		}
 		catch(Exception e){
 			System.out.println(e.getMessage());
@@ -65,7 +65,7 @@ private	CustomerDAORepository service;
 	public ResponseEntity updateCustomer(@RequestBody Customer customer) {
 		try{
 		service.save(customer);
-		return new ResponseEntity(customer, HttpStatus.OK);
+		return new ResponseEntity("Successfully added Customer "+ customer, HttpStatus.OK);
 		}
 		catch(Exception e)
 		{
