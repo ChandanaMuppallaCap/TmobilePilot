@@ -1,43 +1,61 @@
 package com.tmobile.poc.vo;
 
 import java.io.Serializable;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Component
 @Entity
-public class Customer implements Serializable{
+@Table(name = "Customer")
+@JsonInclude(value = Include.NON_NULL)
+public class Customer implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private int customerID;
-	private int phoneNumber;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer customerId;
+	@Column(name = "phone_number", length = 20)
+	private String phoneNumber;
 	private String firstName;
 	private String lastName;
-	private String SSN;
+	@Column(name = "ssn", length = 15)
+	private String ssn;
+	@Column(name = "dob", length = 15)
 	private String dob;
-@Id
-@GeneratedValue(strategy=GenerationType.AUTO)
-	public int getCustomerID() {
-		return customerID;
+	@Column(length = 15)
+	@JsonIgnore
+	private  Integer status;
+	
+	public Customer()
+	{
+		
 	}
 
-	public void setCustomerID(int customerID) {
-		this.customerID = customerID;
+	public Integer getCustomerId() {
+		return customerId;
 	}
 
-	public int getPhoneNumber() {
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(int phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -57,12 +75,12 @@ public class Customer implements Serializable{
 		this.lastName = lastName;
 	}
 
-	public String getSSN() {
-		return SSN;
+	public String getSsn() {
+		return ssn;
 	}
 
-	public void setSSN(String sSN) {
-		SSN = sSN;
+	public void setSsn(String ssn) {
+		this.ssn = ssn;
 	}
 
 	public String getDob() {
@@ -73,11 +91,19 @@ public class Customer implements Serializable{
 		this.dob = dob;
 	}
 
-	@Override
-	public String toString() {
-		return String.format("Customer[customerID=%d, phoneNumber=%d, firstName='%s', lastName='%s',SSN='%s',dob='%s']",
-				customerID, phoneNumber, firstName, lastName, SSN, dob);
-
+	public Integer getStatus() {
+		return status;
 	}
 
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+		@Override
+	public String toString() {
+		return String.format("Customer[customerId=%d, phoneNumber=%s, firstName='%s', lastName='%s',ssn='%s',dob='%s',status='%d']",
+				customerId, phoneNumber, firstName, lastName, ssn, dob,status);
+
+	}
+	
+	
 }

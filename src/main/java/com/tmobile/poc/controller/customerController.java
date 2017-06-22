@@ -1,7 +1,10 @@
 package com.tmobile.poc.controller;
 
 import java.net.HttpURLConnection;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,48 +15,53 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.tmobile.poc.repository.CustomerDAORepository;
+import com.tmobile.poc.repository.IConstants;
 import com.tmobile.poc.vo.Customer;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-
 @RestController
-public class customerController {
+public class CustomerController {
 
-@Autowired
-private	CustomerDAORepository service;
-@ApiOperation(value = "This method is used for Saving/Adding the Customer Information!. ")
-@ApiResponses(value = {
-		@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Customer Data is saved/added Sucessfully!"),
-		@ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Error Occurred while processing the request! ") })
+	private static final Logger logger = Logger.getLogger(CustomerController.class);
+	@Autowired
+	private CustomerDAORepository service;
 
-	@PostMapping( value="/api-service/v1/customers/customer/save",produces = "application/json" ,consumes="application/json")
-	public ResponseEntity addCustomer(@RequestBody Customer customer) {
-		try{
-		service.save(customer);
-		return new ResponseEntity(customer, HttpStatus.OK);
-		}
-		catch(Exception e){
-			System.out.println(e.getMessage());
+	@ApiOperation(value = "This method is used for Saving/Adding the Customer Information!. ")
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Customer Data is saved/added Sucessfully!"),
+			@ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Error Occurred while processing the request! ") })
+
+	@PostMapping(value = "/api-service/v1/customer/save", produces = "application/json")
+	public ResponseEntity saveCustomer(@RequestBody(required = true) Customer customer) {
+		try {
+			service.save(customer);
+			return new ResponseEntity(customer, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity("Error adding the Customer", HttpStatus.BAD_REQUEST);
 		}
 	}
-@ApiOperation(value = "This method is used for Deleting the Customer Information!. ")
-@ApiResponses(value = {
-		@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Customer Information is deleted Sucessfully!"),
-		@ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Error Occurred while processing the request! ") })
 
-	@DeleteMapping( value="/v1/customers/customer/delete/{customerID}",produces = "application/json" )
-	public ResponseEntity deleteCustomer(@PathVariable Integer customerID) {
-		try{
-		service.delete(customerID);
-		return new ResponseEntity(customerID, HttpStatus.OK);
-		}
-		catch(Exception e){
-			System.out.println(e.getMessage());
-			return new ResponseEntity("Error Deleting Customer", HttpStatus.BAD_REQUEST);
+	@ApiOperation(value = "This method is used for Deleting the Customer Information!. ")
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Customer Information is deleted Sucessfully!"),
+			@ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Error Occurred while processing the request! ") })
+
+	@DeleteMapping(value = "/v1/customer/delete/{customerId}", produces = "application/json")
+	public ResponseEntity deleteCustomer(@PathVariable(required = true) Integer customerId) {
+		try {
 			
+		 service.deletecustomer(customerId,IConstants.inactive);
+		
+		
+		 
+		 return new ResponseEntity(IConstants.inactive,HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity("Error Deleting Customer", HttpStatus.BAD_REQUEST);
+
 		}
 	}
 
@@ -61,14 +69,13 @@ private	CustomerDAORepository service;
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Customer Information is saved Sucessfully!"),
 			@ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Error Occurred while processing the request! ") })
-	@PutMapping(value="/v1/customers/customer/update",produces = "application/json" )
-	public ResponseEntity updateCustomer(@RequestBody Customer customer) {
-		try{
-		service.save(customer);
-		return new ResponseEntity( customer, HttpStatus.OK);
-		}
-		catch(Exception e)
-		{
+	@PutMapping(value = "/v1/customer/update", produces = "application/json")
+	public ResponseEntity updateCustomerInfo(@RequestBody(required = true) Customer customer) {
+		try {
+	
+			service.save(customer);
+			return new ResponseEntity(customer, HttpStatus.OK);
+		} catch (Exception e) {
 			return new ResponseEntity("Error updating Customer", HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -77,15 +84,13 @@ private	CustomerDAORepository service;
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Customer Data is fetched as Success!"),
 			@ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Customer Data ") })
-	@GetMapping( value="/api-service/v1/customers/customer/{CustomerID}",produces = "application/json")
-	public ResponseEntity RetrieveCustomer(@PathVariable Integer CustomerID) {
-		if(CustomerID>0){
-		 return new ResponseEntity (service.findOne(CustomerID),HttpStatus.OK);
+	@GetMapping(value = "/api-service/v1/customers/customer/{CustomerId}", produces = "application/json")
+	public ResponseEntity getCustomerInfo(@PathVariable(required = true) Integer customerId) {
+		if (customerId > 0) {
+			return new ResponseEntity(service.findOne(customerId), HttpStatus.OK);
+		} else {
+			return new ResponseEntity("Error finding the Customer with this Id", HttpStatus.BAD_REQUEST);
 		}
-		else
-		{
-			return new ResponseEntity("Error finding the Customer with this Id" , HttpStatus.BAD_REQUEST);	
-			}
 	}
 	
 }
