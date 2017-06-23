@@ -1,10 +1,7 @@
 package com.tmobile.poc.controller;
-
 import java.net.HttpURLConnection;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,19 +12,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.tmobile.poc.repository.CustomerDAORepository;
-import com.tmobile.poc.repository.IConstants;
 import com.tmobile.poc.vo.Customer;
+import com.tmobile.poc.vo.IConstants;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
 public class CustomerController {
-
 	private static final Logger logger = Logger.getLogger(CustomerController.class);
 	@Autowired
 	private CustomerDAORepository service;
-
 	@ApiOperation(value = "This method is used for Saving/Adding the Customer Information!. ")
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Customer Data is saved/added Sucessfully!"),
@@ -48,16 +43,13 @@ public class CustomerController {
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Customer Information is deleted Sucessfully!"),
 			@ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Error Occurred while processing the request! ") })
-
+	//@RequestMapping(value = "/v1/customer/delete/{customerId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@DeleteMapping(value = "/v1/customer/delete/{customerId}", produces = "application/json")
 	public ResponseEntity deleteCustomer(@PathVariable(required = true) Integer customerId) {
 		try {
-			
-		 service.deletecustomer(customerId,IConstants.inactive);
-		
-		
-		 
-		 return new ResponseEntity(IConstants.inactive,HttpStatus.OK);
+
+			service.deleteCustomer(customerId,IConstants.INACTIVE_STR);
+			return new ResponseEntity("Successfully Deleted Customer",HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Error Deleting Customer", HttpStatus.BAD_REQUEST);
@@ -72,7 +64,7 @@ public class CustomerController {
 	@PutMapping(value = "/v1/customer/update", produces = "application/json")
 	public ResponseEntity updateCustomerInfo(@RequestBody(required = true) Customer customer) {
 		try {
-	
+
 			service.save(customer);
 			return new ResponseEntity(customer, HttpStatus.OK);
 		} catch (Exception e) {
@@ -92,5 +84,5 @@ public class CustomerController {
 			return new ResponseEntity("Error finding the Customer with this Id", HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 }
