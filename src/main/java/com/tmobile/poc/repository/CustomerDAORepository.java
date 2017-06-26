@@ -11,11 +11,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.tmobile.poc.IConstants;
-import com.tmobile.poc.vo.CustomerVo;
+import com.tmobile.poc.vo.Customer;
 
 @Repository
 
-public interface CustomerDAORepository extends CrudRepository<CustomerVo, Integer> ,IConstants {
+public interface CustomerDAORepository extends CrudRepository<Customer, Integer> ,IConstants {
 
  
 	@Modifying

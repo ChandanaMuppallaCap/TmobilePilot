@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @Entity
 @Table(name = "Customer")
 @JsonInclude(value = Include.NON_NULL)
-public class CustomerVo implements Serializable {
+public class Customer implements Serializable {
 	/**
 	 * 
 	 */
@@ -36,9 +36,9 @@ public class CustomerVo implements Serializable {
 	private String dob;
 	@Column(length = 15)
 	@JsonIgnore
-	private  Integer status;
+	private  String status;
 	
-	public CustomerVo()
+	public Customer()
 	{
 		
 	}
@@ -91,11 +91,11 @@ public class CustomerVo implements Serializable {
 		this.dob = dob;
 	}
 
-	public Integer getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 		@Override
