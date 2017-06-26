@@ -11,17 +11,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.tmobile.poc.IConstants;
-import com.tmobile.poc.vo.Customer;
+import com.tmobile.poc.vo.CustomerVO;
 
 @Repository
 
-public interface CustomerDAORepository extends CrudRepository<Customer, Integer> ,IConstants {
+public interface CustomerDAORepository extends CrudRepository<CustomerVO, Integer> ,IConstants {
 
  
 	@Modifying
 	@Transactional
-	@Query("Update  Customer c set  c.status = :status where c.customerId= :customerId")
+	@Query("Update  CustomerVO c set  c.status = :status where c.customerId= :customerId")
 	
-	void deleteCustomer(@Param("customerId") Integer customerId,@Param("status") String status);
+	void deleteCustomer(@Param("customerId") Integer customerId,@Param("status") int status);
 
 }

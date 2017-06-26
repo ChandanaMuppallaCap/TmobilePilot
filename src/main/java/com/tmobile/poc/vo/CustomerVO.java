@@ -13,12 +13,13 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.tmobile.poc.IConstants;
 
 @Component
 @Entity
 @Table(name = "Customer")
 @JsonInclude(value = Include.NON_NULL)
-public class Customer implements Serializable {
+public class CustomerVO implements Serializable {
 	/**
 	 * 
 	 */
@@ -36,9 +37,9 @@ public class Customer implements Serializable {
 	private String dob;
 	@Column(length = 15)
 	@JsonIgnore
-	private  String status;
+	private  Integer status;
 	
-	public Customer()
+	public CustomerVO()
 	{
 		
 	}
@@ -91,11 +92,11 @@ public class Customer implements Serializable {
 		this.dob = dob;
 	}
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 		@Override
@@ -104,6 +105,22 @@ public class Customer implements Serializable {
 				customerId, phoneNumber, firstName, lastName, ssn, dob,status);
 
 	}
+		
+	
+		public  String getStatusStr() {
+			String str = "";
+			switch ( this.status) {
+			case IConstants.ACTIVE:
+				str = IConstants.ACTIVE_STR;
+				break;
+			case IConstants.INACTIVE:
+				str = IConstants.INACTIVE_STR;
+				break;
+			}
+			return str;
+
+	}
+
 	
 	
 }
