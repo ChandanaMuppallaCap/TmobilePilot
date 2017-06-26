@@ -2,17 +2,20 @@ package com.tmobile.poc.repository;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+
 import org.springframework.stereotype.Repository;
-import com.tmobile.poc.vo.Customer;
-import com.tmobile.poc.vo.IConstants;
+
+import com.tmobile.poc.IConstants;
+import com.tmobile.poc.vo.CustomerVo;
 
 @Repository
-public interface CustomerDAORepository extends CrudRepository<Customer, Integer> ,IConstants {
+
+public interface CustomerDAORepository extends CrudRepository<CustomerVo, Integer> ,IConstants {
 
  
 	@Modifying

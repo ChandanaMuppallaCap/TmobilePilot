@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.tmobile.poc.IConstants;
 import com.tmobile.poc.repository.CustomerDAORepository;
-import com.tmobile.poc.vo.Customer;
-import com.tmobile.poc.vo.IConstants;
+import com.tmobile.poc.vo.CustomerVo;
+
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -29,7 +31,7 @@ public class CustomerController {
 			@ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Error Occurred while processing the request! ") })
 
 	@PostMapping(value = "/api-service/v1/customer/save", produces = "application/json")
-	public ResponseEntity saveCustomer(@RequestBody(required = true) Customer customer) {
+	public ResponseEntity saveCustomer(@RequestBody(required = true) CustomerVo customer) {
 		try {
 			service.save(customer);
 			return new ResponseEntity(customer, HttpStatus.OK);
@@ -62,7 +64,7 @@ public class CustomerController {
 			@ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Customer Information is saved Sucessfully!"),
 			@ApiResponse(code = HttpURLConnection.HTTP_BAD_REQUEST, message = "Error Occurred while processing the request! ") })
 	@PutMapping(value = "/v1/customer/update", produces = "application/json")
-	public ResponseEntity updateCustomerInfo(@RequestBody(required = true) Customer customer) {
+	public ResponseEntity updateCustomerInfo(@RequestBody(required = true) CustomerVo customer) {
 		try {
 
 			service.save(customer);
