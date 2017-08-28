@@ -21,8 +21,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-public class CustomerController {
-	private static final Logger logger = Logger.getLogger(CustomerController.class);
+public class customerController {
+	private static final Logger logger = Logger.getLogger(customerController.class);
 	@Autowired
 	private CustomerDAORepository service;
 	@Autowired
